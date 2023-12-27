@@ -16,8 +16,8 @@ extension NibInstantiatable where Self: UIViewController {
 
     static var NibName: String { return String(describing: self) }
 
-    public static func instantiate() -> UIViewController {
-        return UIViewController(nibName: NibName, bundle: nil)
+    public static func instantiate() -> Self {
+        return Self(nibName: NibName, bundle: nil)
     }
 
 }
