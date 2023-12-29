@@ -27,6 +27,7 @@ extension UIViewController {
         removeFromParent()
     }
     
+    @MainActor
     public func transistionVC(_ target: UIViewController, toView: UIView) {
         guard let previousViewController = children.first else {
             return addVC(target, toView: toView)
