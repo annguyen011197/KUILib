@@ -10,6 +10,10 @@ import UIKit
 import SnapKit
 
 extension UIViewController {
+    public func wrapWithNavigation() -> UINavigationController {
+        return UINavigationController(rootViewController: self)
+    }
+    
     public func addVC(_ target: UIViewController, toView: UIView) {
         addChild(target)
         toView.addSubview(target.view)
@@ -31,6 +35,10 @@ extension UIViewController {
     public func transistionVC(_ target: UIViewController, toView: UIView) {
         guard let previousViewController = children.first else {
             return addVC(target, toView: toView)
+        }
+        
+        if previousViewController == target {
+            return
         }
         
         addChild(target)

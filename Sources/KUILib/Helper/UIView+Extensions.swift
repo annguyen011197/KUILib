@@ -58,6 +58,13 @@ extension UIView {
         }
     }
 
+    public func clickAnimation(backgroundColor: UIColor = .lightGray) {
+        let preBackground = self.backgroundColor
+        self.backgroundColor = backgroundColor
+        UIView.animate(withDuration: 0.2) {
+            self.backgroundColor = preBackground
+        }
+    }
 
     private func applyGradient(colours: [UIColor], locations: [NSNumber]?) -> CAGradientLayer {
         let gradient: CAGradientLayer = CAGradientLayer()
