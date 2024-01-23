@@ -70,35 +70,6 @@ open class KTabbarController: UITabBarController {
         }
     }
     
-//    public func updateTabBarItem(key: String, name: String? = nil, defaultIcon: UIImage? = nil, selectedIcon: UIImage? = nil) {
-//        guard let vc = viewControllers?.compactMap({
-//            $0 as? UIViewController & KTabChildKey
-//        }).first(where: {
-//            $0.key == key
-//        }) else { return }
-//        if let name = name {
-//            vc.tabBarItem.title = name
-//        }
-//        if let defaultIcon = defaultIcon {
-//            vc.tabBarItem.image = defaultIcon
-//        }
-//        if let selectedIcon = selectedIcon {
-//            vc.tabBarItem.selectedImage = selectedIcon
-//        }
-//    }
-    
-//    open override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
-//        let newDict = viewControllers?.compactMap({
-//            $0 as? UIViewController & KTabChildKey
-//        }).reduce([String: (UIViewController & KTabChildKey)](), { partialResult, vc in
-//            var dict = partialResult
-//            dict[vc.key] = vc
-//            return dict
-//        }) ?? [:]
-//        keyValueViewControllers = newDict
-//        super.setViewControllers(Array(keyValueViewControllers.values), animated: animated)
-//    }
-    
     public struct KTabbarAttribute {
         let seperatorLine: UIColor = UIColor.lightGray.withAlphaComponent(0.2)
     }

@@ -10,7 +10,7 @@ import UIKit
 
 public struct GradientBackground {
     public enum Orientation {
-        case vertical, horizontal
+        case vertical, horizontal, halfRadiant
     }
     
     public var colors: [UIColor]
@@ -54,6 +54,12 @@ extension UIView {
             if value.orientation == .horizontal {
                 layer.startPoint = CGPoint(x: 0, y: 0.5)
                 layer.endPoint = CGPoint(x: 1, y: 0.5)
+            } else if value.orientation == .vertical {
+                
+            } else if value.orientation == .halfRadiant {
+                layer.startPoint = CGPoint(x: 0.5, y: 0)
+                layer.endPoint = CGPoint(x: 1, y: 1)
+                layer.type = .radial
             }
         }
     }
@@ -67,10 +73,16 @@ extension UIView {
     }
 
     private func applyGradient(colours: [UIColor], locations: [NSNumber]?) -> CAGradientLayer {
+        self.layer.sublayers?.filter({
+            $0.name == "gradient_background"
+        }).forEach({
+            $0.removeFromSuperlayer()
+        })
         let gradient: CAGradientLayer = CAGradientLayer()
         gradient.frame = self.bounds
         gradient.colors = colours.map { $0.cgColor }
         gradient.locations = locations
+        gradient.name = "gradient_background"
         self.layer.insertSublayer(gradient, at: 0)
         return gradient
     }
