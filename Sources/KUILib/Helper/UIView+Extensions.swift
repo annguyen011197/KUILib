@@ -22,6 +22,25 @@ public struct GradientBackground {
         self.locations = locations
         self.orientation = orientation
     }
+    
+    public func buildLayer(size: CGRect) -> CAGradientLayer {
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = size
+        gradient.colors = colors.map { $0.cgColor }
+        gradient.locations = locations
+        switch orientation {
+        case .vertical:
+            break
+        case .horizontal:
+            gradient.startPoint = CGPoint(x: 0, y: 0.5)
+            gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        case .halfRadiant:
+            gradient.startPoint = CGPoint(x: 0.5, y: 0)
+            gradient.endPoint = CGPoint(x: 1, y: 1)
+            gradient.type = .radial
+        }
+        return gradient
+    }
 }
 
 extension UIView {
@@ -50,18 +69,15 @@ extension UIView {
     
     @discardableResult
     public func makeGradient(value: GradientBackground) -> CAGradientLayer {
-        return applyGradient(colours: value.colors, locations: value.locations).then { layer in
-            if value.orientation == .horizontal {
-                layer.startPoint = CGPoint(x: 0, y: 0.5)
-                layer.endPoint = CGPoint(x: 1, y: 0.5)
-            } else if value.orientation == .vertical {
-                
-            } else if value.orientation == .halfRadiant {
-                layer.startPoint = CGPoint(x: 0.5, y: 0)
-                layer.endPoint = CGPoint(x: 1, y: 1)
-                layer.type = .radial
-            }
-        }
+        self.layer.sublayers?.filter({
+            $0.name == "gradient_background"
+        }).forEach({
+            $0.removeFromSuperlayer()
+        })
+        let gradient: CAGradientLayer = value.buildLayer(size: self.bounds)
+        gradient.name = "gradient_background"
+        self.layer.insertSublayer(gradient, at: 0)
+        return gradient
     }
 
     public func clickAnimation(backgroundColor: UIColor = .lightGray) {
@@ -71,7 +87,41 @@ extension UIView {
             self.backgroundColor = preBackground
         }
     }
-
+    
+    public func clickEffectAnimation() {
+        let group = CAAnimationGroup()
+        group.animations = [pulsateEffect(), flashEffect()]
+        group.duration = 0.2
+        layer.add(group, forKey: "clickEffectAnimationGroup")
+    }
+    
+    private func pulsateEffect() -> CABasicAnimation {
+        return CASpringAnimation(keyPath: "transform.scale").then { pulse in
+            pulse.duration = 0.4
+            pulse.fromValue = 0.98
+            pulse.toValue = 1.0
+            pulse.initialVelocity = 0.5
+            pulse.damping = 1.0
+        }
+    }
+    
+    private func flashEffect() -> CABasicAnimation {
+        return CABasicAnimation(keyPath: "opacity").then { flash in
+            flash.duration = 0.3
+            flash.fromValue = 1
+            flash.toValue = 0.1
+            flash.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        }
+    }
+    
+    public func pulsate() {
+        layer.add(pulsateEffect(), forKey: nil)
+    }
+    
+    public func flash() {
+        layer.add(flashEffect(), forKey: nil)
+    }
+    
     private func applyGradient(colours: [UIColor], locations: [NSNumber]?) -> CAGradientLayer {
         self.layer.sublayers?.filter({
             $0.name == "gradient_background"
