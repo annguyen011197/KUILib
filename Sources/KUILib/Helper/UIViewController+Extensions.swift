@@ -20,7 +20,7 @@ extension UIViewController {
         target.didMove(toParent: self)
         
         target.view.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalTo(toView)
         }
     }
     

@@ -149,7 +149,33 @@ extension UIView {
         }
 
     }
+    
+    public func onTapListener(animation: Bool = true, _ closure: @escaping()->()) {
+        isUserInteractionEnabled = true
+        @objc class ClosureSleeve: NSObject {
+            let closure:()->()
+            init(_ closure: @escaping()->()) {
+                self.closure = closure
+            }
+            @objc func invoke() {
+                closure()
+            }
+        }
+        
+        let sleeve = animation
+        ?  ClosureSleeve({ [weak self] in
+            guard let self = self else { return }
+            self.clickEffectAnimation()
+            closure()
+        })
+        :  ClosureSleeve(closure)
+        addGestureRecognizer(
+            UITapGestureRecognizer(target: sleeve, action: #selector(ClosureSleeve.invoke))
+        )
+        objc_setAssociatedObject(self, "\(UUID())", sleeve, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+    }
 }
+
 
 //extension UITableViewCell {
 //    public func addShadow(corner: CGFloat = 10, color: UIColor = .black, radius: CGFloat = 15, offset: CGSize = CGSize(width: 0, height: 0), opacity: Float = 0.2) {
