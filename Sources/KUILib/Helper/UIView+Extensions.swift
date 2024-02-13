@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 public struct GradientBackground {
     public enum Orientation {
@@ -173,6 +174,26 @@ extension UIView {
             UITapGestureRecognizer(target: sleeve, action: #selector(ClosureSleeve.invoke))
         )
         objc_setAssociatedObject(self, "\(UUID())", sleeve, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+    }
+    
+    public func height(_ value: CGFloat) {
+        self.snp.makeConstraints { make in
+            make.height.equalTo(value)
+        }
+    }
+    
+    public func width(_ value: CGFloat) {
+        self.snp.makeConstraints { make in
+            make.width.equalTo(value)
+        }
+    }
+    
+    public static func imageBtn(image: UIImage? = nil) -> UIButton {
+        return UIButton(type: .custom).then { btn in
+            btn.setTitle("", for: .normal)
+            btn.setImage(image, for: .normal)
+        }
+
     }
 }
 
