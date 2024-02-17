@@ -16,3 +16,13 @@ open class KViewController: UIViewController {
     }
 
 }
+
+open class KBindingViewController<T: UIViewController&NibInstantiatable>: KViewController {
+    
+    public lazy var binding: T = T.instantiate()
+    
+    open override func loadView() {
+        view = UIView()
+        addVC(binding, toView: view)
+    }
+}

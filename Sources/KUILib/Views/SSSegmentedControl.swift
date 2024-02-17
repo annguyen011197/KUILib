@@ -18,6 +18,7 @@ open class SSSegmentedControl: UIView {
     open var buttonPadding: CGFloat = 5
     open var stackViewSpacing: CGFloat = 0
     open var selectedGradientColor: GradientBackground? = nil
+    open var titleFont: UIFont = .systemFont(ofSize: 16)
     //MARK: - Callback
     open var didTapSegment: ((Int) -> ())?
     
@@ -221,7 +222,7 @@ open class SSSegmentedControl: UIView {
                 button.setTitle("<Segment>", for: .normal)
             }
             
-            button.titleLabel?.font = .systemFont(ofSize: 16)
+            button.titleLabel?.font = self.titleFont
             button.addTarget(self, action: #selector(segmentTapped(_:)), for: .touchUpInside)
             
             stackView.addArrangedSubview(button)

@@ -197,6 +197,12 @@ extension UIView {
     }
 }
 
+public extension UIEdgeInsets {
+    init(all: CGFloat) {
+        self.init(top: all, left: all, bottom: all, right: all)
+    }
+}
+
 
 //extension UITableViewCell {
 //    public func addShadow(corner: CGFloat = 10, color: UIColor = .black, radius: CGFloat = 15, offset: CGSize = CGSize(width: 0, height: 0), opacity: Float = 0.2) {
