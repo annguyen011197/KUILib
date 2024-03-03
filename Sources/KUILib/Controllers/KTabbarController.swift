@@ -14,12 +14,14 @@ open class SubTabWrapper {
     open var name: String
     open var defaultIcon: UIImage
     open var selectedIcon: UIImage
+    open var tag: Int
     
-    public init(viewController: UIViewController, name: String, defaultIcon: UIImage, selectedIcon: UIImage) {
+    public init(viewController: UIViewController, name: String, defaultIcon: UIImage, selectedIcon: UIImage, tag: Int) {
         self.viewController = viewController
         self.name = name
         self.defaultIcon = defaultIcon
         self.selectedIcon = selectedIcon
+        self.tag = tag
     }
 }
 
@@ -43,6 +45,7 @@ open class KTabbarController: UITabBarController {
     public func registerTabController(tabbarData: SubTabWrapper, animated: Bool = true) {
         let vc = tabbarData.viewController
         vc.tabBarItem =  UITabBarItem(title: tabbarData.name, image: tabbarData.defaultIcon, selectedImage: tabbarData.selectedIcon)
+        vc.tabBarItem.tag = tabbarData.tag
         let newVCs = (viewControllers ?? []) + [vc]
         setViewControllers(newVCs, animated: animated)
     }
@@ -76,7 +79,9 @@ open class KTabbarController: UITabBarController {
 }
 
 extension KTabbarController: UITabBarControllerDelegate {
-    
+    open override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        
+    }
 }
 
 
