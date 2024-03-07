@@ -76,11 +76,20 @@ open class KTabbarController: UITabBarController {
     public struct KTabbarAttribute {
         let seperatorLine: UIColor = UIColor.lightGray.withAlphaComponent(0.2)
     }
+    
+    open func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        self.navigationItem.title = viewController.title
+    }
+    
 }
 
 extension KTabbarController: UITabBarControllerDelegate {
     open override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         
+    }
+    
+    public func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        return true
     }
 }
 
