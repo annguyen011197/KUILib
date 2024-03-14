@@ -9,12 +9,24 @@ import UIKit
 
 open class KViewController: UIViewController {
 
+
     open override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
+    
 
+}
+
+public extension UIViewController {
+    var selfNavigationBar: UINavigationBar? {
+        self.navigationController?.navigationBar
+    }
+    
+    var selfTopItemNavigation: UINavigationItem? {
+        self.selfNavigationBar?.topItem
+    }
 }
 
 open class KBindingViewController<T: UIViewController&NibInstantiatable>: KViewController {

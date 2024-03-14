@@ -25,15 +25,12 @@ open class SubTabWrapper {
     }
 }
 
-//public protocol KTabChildKey {
-//    var key: String { get }
-//}
 
 open class KTabbarController: UITabBarController {
     
     open var attribute: KTabbarAttribute = KTabbarAttribute()
     
-//    open var keyValueViewControllers: [String: (UIViewController & KTabChildKey)] = [:]
+    public private(set) var isTabbarHidden: Bool = false
     
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +67,35 @@ open class KTabbarController: UITabBarController {
         }
         if let selectedIcon = selectedIcon {
             vc.tabBarItem.selectedImage = selectedIcon
+        }
+    }
+    
+    public func showHideTabbar(isHidden: Bool, animate: Bool) {
+        guard let vc = selectedViewController else { return }
+        guard self.isTabbarHidden != isHidden else { return }
+        let frame = self.tabBar.frame
+        let height = frame.size.height
+        let offsetY = isHidden ? height : -height
+        var performShowHide = {
+            self.tabBar.frame = self.tabBar.frame.offsetBy(dx: 0, dy: offsetY)
+            self.selectedViewController?.view.frame = CGRect(
+                x: 0,
+                y: 0,
+                width: vc.view.frame.width,
+                height: vc.view.frame.height + offsetY
+            )
+            
+            self.view.setNeedsDisplay()
+            self.view.layoutIfNeeded()
+        }
+        
+        if animate {
+            UIView.animate(withDuration: 0.3, animations: performShowHide) { [weak self] _ in
+                self?.isTabbarHidden = isHidden
+            }
+        } else {
+            performShowHide()
+            self.isTabbarHidden = isHidden
         }
     }
     
